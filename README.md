@@ -1,48 +1,44 @@
-# gRPC + Kotlin + Spring Boot Example
+1. Concurrency and scalability
 
-Este proyecto demuestra cómo configurar y usar gRPC con Kotlin en una aplicación Spring Boot. El servicio gRPC implementado es un servicio simple que devuelve la información de un usuario a partir de una solicitud.
+Implement load balancing with Kubernetes or a gRPC proxy like Envoy.
 
-## **Requisitos**
+Horizontal scaling with multiple instances of the UserService.
 
-- **JDK 11+**
-- **Maven 3.x+**
-- **gRPC** (https://grpc.io/)
-- **Spring Boot** (https://spring.io/projects/spring-boot)
-- **Kotlin** (https://kotlinlang.org/)
+Using an efficient connection pool for gRPC with Netty.
 
-## **Tecnologías Usadas**
+2. Communication between services
 
-- Kotlin
-- Spring Boot
-- gRPC
-- Protocol Buffers (Protobuf)
-- Maven para gestión de dependencias y construcción
+Synchronous gRPC for low-latency interactions between microservices.
 
----
+Asynchronous messaging with Apache Kafka or RabbitMQ for events like user_created or order_placed.
 
-## **Instrucciones para Ejecutar el Proyecto**
+3. Data consistency
 
-### **1. Clonar el Repositorio**
+Implement caching in Redis to reduce the load on the database.
 
-Primero, clona el repositorio en tu máquina local:
+Using ACID transactions in PostgreSQL or NoSQL databases as required.
 
-```bash
-git clone https://github.com/BillyBohren/exercise3.git
-cd grpc-kotlin-
-```
+Database replication for greater availability.
 
-## **2. Construir el Proyecto**
+4. Error and retry handling
 
-Usa Maven para construir el proyecto. Asegúrate de tener Maven instalado y configurado correctamente:
+Implement Circuit Breaker patterns with Resilience4j to avoid cascading failures.
 
-```bash
-mvn clean install
-```
+Retries and exponential backoff in failed gRPC calls.
 
-### **3. Ejecutar la Aplicación**
+Centralized logs and monitoring with Prometheus + Grafana.
 
-Para ejecutar la aplicación Spring Boot, usa el siguiente comando:
+5. Deployment
 
-```bash
-mvn spring-boot:run
-```
+Containerization with Docker.
+
+Orchestration with Kubernetes in the cloud (AWS, GCP, Azure).
+
+CI/CD with GitHub Actions or GitLab CI for automated deployments.
+
+6. High-level architecture
+
+
+7. Scalability approach
+
+Using load balancers and multiple instances to handle the load.
