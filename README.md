@@ -42,3 +42,12 @@ CI/CD with GitHub Actions or GitLab CI for automated deployments.
 7. Scalability approach
 
 Using load balancers and multiple instances to handle the load.
+Cache implementation to improve response speed.
+
+Read/write separation in the database to optimize performance, can be using a CQRS.
+
+8. Failure and retry strategy
+
+Implementation of Circuit Breaker for calls to external services.
+
+Active monitoring with alerts to detect failures in real time.
