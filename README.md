@@ -5,11 +5,41 @@
 - **Load balancing**: Implement load balancing with Kubernetes or a gRPC proxy like Envoy.
 - **Horizontal scaling**: Use multiple instances of the UserService for scaling.
 - **Efficient connection pooling**: Utilize an efficient connection pool for gRPC with Netty.
+```bash
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.NettyChannelBuilder;
+import java.util.concurrent.TimeUnit;
+
+public class GrpcClient {
+    private final ManagedChannel channel;
+
+    public GrpcClient(String host, int port) {
+        this.channel = NettyChannelBuilder.forAddress(host, port)
+                .usePlaintext()  // Remove for production (use TLS)
+                .keepAliveTime(30, TimeUnit.SECONDS) // Keep the connection alive
+                .keepAliveTimeout(10, TimeUnit.SECONDS)
+                .perRpcBufferLimit(16 * 1024 * 1024) // Optimize buffer size
+                .maxInboundMessageSize(16 * 1024 * 1024) // Set max message size
+                .executor(java.util.concurrent.Executors.newFixedThreadPool(10)) // Limit thread pool size
+                .build();
+    }
+
+    public ManagedChannel getChannel() {
+        return channel;
+    }
+
+    public void shutdown() throws InterruptedException {
+        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+}
+
+```
 
 ## 2. Communication Between Services
 
 - **Synchronous communication**: Use gRPC for low-latency interactions between microservices.
-- **Asynchronous messaging**: Leverage Apache Kafka or RabbitMQ for events such as `user_created` or `order_placed`.
+- **Asynchronous messaging**: Asynchronous messaging with Apache Kafka or RabbitMQ for events such as `user_created` or `order_placed`.
 
 ## 3. Data Consistency
 
@@ -31,7 +61,20 @@
 
 ## 6. High-Level Architecture
 
-[Insert a diagram or detailed description of the system architecture here.]
+```bash
++--------------------+        gRPC        +--------------------+
+|    UserService    |------------------->|  PaymentService    |
+| (Gestion usuarios)|                    | (Procesa pagos)    |
++--------------------+                    +--------------------+
+         |                                      |
+         | (Evento Kafka: user_created)         | (Evento Kafka: payment_successful)
+         v                                      v
++--------------------+                    +--------------------+
+| NotificationService|<------------------ |       Kafka        |
+|  (Envía emails)   |      Eventos        | (Mensajería async) |
++--------------------+                    +--------------------+
+
+```
 
 ## 7. Scalability Approach
 
